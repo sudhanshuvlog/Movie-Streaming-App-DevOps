@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watch Movie</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        video {
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Watch Movie</h1>
+        <div id="movie-player"></div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const movieId = urlParams.get('id');
+
+        fetch(`http://65.2.191.204:3000/movies/${movieId}`)
+            .then(response => response.json())
+            .then(movie => {
+                if (!movie) {
+                    document.getElementById('movie-player').innerHTML = '<p>Movie not found.</p>';
+                    return;
+                }
+
+                const moviePlayer = document.getElementById('movie-player');
+                moviePlayer.innerHTML = `
+                    <h2>${movie.title}</h2>
+                    <p><strong>Genre:</strong> ${movie.genre}</p>
+                    <p><strong>Description:</strong> ${movie.description}</p>
+                    <p><strong>Rating:</strong> ${movie.rating}</p>
+                    <p><strong>Release Year:</strong> ${movie.release_year}</p>
+                    <video controls>
+                        <source src="${movie.video_url}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                `;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('movie-player').innerHTML = '<p>Error loading movie.</p>';
+            });
+    </script>
+</body>
+</html>
+

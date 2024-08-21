@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Movies</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        input, button {
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .results {
+            margin-top: 20px;
+        }
+        .movie-card {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: #fff;
+        }
+        .movie-card img {
+            max-width: 100px;
+            margin-right: 10px;
+        }
+        .movie-card h2 {
+            margin: 0;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Search Movies</h1>
+        <form id="search-form">
+            <label for="query">Search</label>
+            <input type="text" id="query" name="query" placeholder="Enter title or genre" required>
+            <button type="submit">Search</button>
+        </form>
+        <div class="results" id="results"></div>
+    </div>
+
+    <script>
+        document.getElementById('search-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const query = document.getElementById('query').value;
+            fetch(`http://65.2.191.204:3000/movies/search?query=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    const resultsDiv = document.getElementById('results');
+                    resultsDiv.innerHTML = '';
+
+                    if (data.length === 0) {
+                        resultsDiv.innerHTML = '<p>No movies found.</p>';
+                        return;
+                    }
+
+                    data.forEach(movie => {
+                        const movieCard = document.createElement('div');
+                        movieCard.classList.add('movie-card');
+                        movieCard.innerHTML = `
+                            <img src="${movie.image_url}" alt="${movie.title}">
+                            <h2>${movie.title}</h2>
+                            <p><strong>Genre:</strong> ${movie.genre}</p>
+                            <p><strong>Description:</strong> ${movie.description}</p>
+                            <p><strong>Rating:</strong> ${movie.rating}</p>
+                            <p><strong>Release Year:</strong> ${movie.release_year}</p>
+                            <a href="watch.html?id=${movie.id}">Watch</a>
+                        `;
+                        resultsDiv.appendChild(movieCard);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error searching movies.');
+                });
+        });
+    </script>
+</body>
+</html>
+

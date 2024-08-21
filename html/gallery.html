@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Gallery</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+        .gallery-item {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            width: 200px;
+            text-align: center;
+        }
+        .gallery-item img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        .gallery-item h2 {
+            margin: 0;
+            font-size: 1em;
+            padding: 10px;
+            background: #eee;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Movie Gallery</h1>
+        <div class="gallery" id="gallery"></div>
+    </div>
+
+    <script>
+        fetch('http://65.2.191.204:3000/movies')
+            .then(response => response.json())
+            .then(data => {
+                const galleryDiv = document.getElementById('gallery');
+                galleryDiv.innerHTML = '';
+
+                data.forEach(movie => {
+                    const galleryItem = document.createElement('div');
+                    galleryItem.classList.add('gallery-item');
+                    galleryItem.innerHTML = `
+                        <img src="${movie.image_url}" alt="${movie.title}">
+                        <h2>${movie.title}</h2>
+                    `;
+                    galleryDiv.appendChild(galleryItem);
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('gallery').innerHTML = '<p>Error loading gallery.</p>';
+            });
+    </script>
+</body>
+</html>
+

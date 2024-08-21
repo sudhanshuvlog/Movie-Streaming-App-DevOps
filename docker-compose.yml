@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  node-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: node-app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mysql-db
+
+  web:
+    build:
+      context: ./html
+      dockerfile: Dockerfile
+    container_name: web
+    ports:
+      - "80:80"
+
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-db
+    environment:
+      MYSQL_DATABASE: movie_db
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: redhat
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    ports:
+      - "3306:3306"
+
+
+volumes:
+  mysql-data:
+
