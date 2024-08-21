@@ -10,7 +10,9 @@
     "express": "*",
     "mysql2": "*",
     "multer": "*",
-    "cors": "*"
+    "cors": "*",
+    "aws-sdk": "*",
+    "@aws-sdk/client-s3" : "*"
   },
   "author": "Your Name",
   "license": "ISC"
