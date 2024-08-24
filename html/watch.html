@@ -50,7 +50,7 @@
         const movieId = urlParams.get('id');
 
         if (movieId) {
-            fetch(`http://65.2.191.204:3000/movies/${movieId}`)
+            fetch(`http://${API_URL}:3000/movies/${movieId}`)
                 .then(response => response.json())
                 .then(movie => {
                     const videoElement = document.getElementById('movie-video');

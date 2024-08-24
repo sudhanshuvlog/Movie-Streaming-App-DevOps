@@ -73,36 +73,43 @@
             event.preventDefault();
 
             const query = document.getElementById('query').value;
-            fetch(`http://65.2.191.204:3000/movies/search?query=${encodeURIComponent(query)}`)
-                .then(response => response.json())
-                .then(data => {
-                    const resultsDiv = document.getElementById('results');
-                    resultsDiv.innerHTML = '';
-
-                    if (data.length === 0) {
-                        resultsDiv.innerHTML = '<p>No movies found.</p>';
-                        return;
-                    }
-
-                    data.forEach(movie => {
-                        const movieCard = document.createElement('div');
-                        movieCard.classList.add('movie-card');
-                        movieCard.innerHTML = `
-                            <img src="${movie.image_url}" alt="${movie.title}">
-                            <h2>${movie.title}</h2>
-                            <p><strong>Genre:</strong> ${movie.genre}</p>
-                            <p><strong>Description:</strong> ${movie.description}</p>
-                            <p><strong>Rating:</strong> ${movie.rating}</p>
-                            <p><strong>Release Year:</strong> ${movie.release_year}</p>
-                            <a href="watch.html?id=${movie.id}">Watch</a>
-                        `;
-                        resultsDiv.appendChild(movieCard);
-                    });
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Error searching movies.');
+            fetch(`http://${API_URL}:3000/movies/search?query=${encodeURIComponent(query)}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                const resultsDiv = document.getElementById('results');
+                resultsDiv.innerHTML = '';
+        
+                if (!Array.isArray(data)) {
+                    resultsDiv.innerHTML = '<p>Unexpected response format.</p>';
+                    return;
+                }
+        
+                if (data.length === 0) {
+                    resultsDiv.innerHTML = '<p>No movies found.</p>';
+                    return;
+                }
+        
+                data.forEach(movie => {
+                    const movieCard = document.createElement('div');
+                    movieCard.classList.add('movie-card');
+                    movieCard.innerHTML = `
+                        <img src="${movie.image_url}" alt="${movie.title}">
+                        <h2>${movie.title}</h2>
+                        <p><strong>Genre:</strong> ${movie.genre}</p>
+                        <p><strong>Description:</strong> ${movie.description}</p>
+                        <p><strong>Rating:</strong> ${movie.rating}</p>
+                        <p><strong>Release Year:</strong> ${movie.release_year}</p>
+                        <a href="watch.html?id=${movie.id}">Watch</a>
+                    `;
+                    resultsDiv.appendChild(movieCard);
                 });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error searching movies.');
+            });
+
         });
     </script>
 </body>

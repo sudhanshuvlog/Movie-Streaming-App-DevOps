@@ -1,9 +1,13 @@
-# Use the official Nginx image from the Docker Hub
 FROM nginx:alpine
 
-# Copy the HTML files to the Nginx default HTML directory
+# Copy your HTML files into the container
 COPY . /usr/share/nginx/html
 
-# Expose port 80
-EXPOSE 80
+# Copy the entrypoint script into the container
+COPY entrypoint.sh /entrypoint.sh
 
+# Make the entrypoint script executable
+RUN chmod +x /entrypoint.sh
+
+# Set the entrypoint to the script
+ENTRYPOINT ["/bin/sh", "/entrypoint.sh"]

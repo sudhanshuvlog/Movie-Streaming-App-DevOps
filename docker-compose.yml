@@ -2,20 +2,27 @@ version: '3.8'
 
 services:
   node-app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: jinny1/movie-app-backend-nodejs
     container_name: node-app
+    environment:
+      DB_HOST: 3.6.91.70
+      DB_USER: admin
+      DB_PASSWORD: redhat
+      DB_NAME: movie_db
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY:  ${AWS_SECRET_ACCESS_KEY}
+      AWS_REGION: ap-south-1
     ports:
       - "3000:3000"
     depends_on:
-      - mysql-db
+      mysql-db:
+        condition: service_healthy
 
   web:
-    build:
-      context: ./html
-      dockerfile: Dockerfile
+    image: jinny1/movie-app-frontend
     container_name: web
+    environment:
+      API_URL: 3.6.91.70
     ports:
       - "80:80"
 
@@ -29,7 +36,12 @@ services:
       MYSQL_RANDOM_ROOT_PASSWORD: '1'
     ports:
       - "3306:3306"
-
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "--silent"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
 
 volumes:
   mysql-data:

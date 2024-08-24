@@ -89,7 +89,7 @@
             formData.append('image', document.getElementById('image').files[0]);
             formData.append('video', document.getElementById('video').files[0]);
 
-            fetch('http://65.2.191.204:3000/movies', {
+            fetch('http://${API_URL}:3000/movies', {
                 method: 'POST',
                 body: formData
             })

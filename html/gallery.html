@@ -75,7 +75,7 @@
     </div>
 
     <script>
-        fetch('http://65.2.191.204:3000/movies')
+        fetch('http://${API_URL}:3000/movies')
             .then(response => response.json())
             .then(data => {
                 const galleryDiv = document.getElementById('gallery');
