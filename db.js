@@ -2,10 +2,10 @@
 const mysql = require('mysql2');
 
 const db = mysql.createConnection({
-  host: process.env.DB_HOST || '43.204.29.12',
-  user: process.env.DB_USER || 'admin',
-  password: process.env.DB_PASSWORD || 'redhat',
-  database: process.env.DB_NAME || 'movie_db',
+  host: process.env.DB_HOST ,
+  user: process.env.DB_USER ,
+  password: process.env.DB_PASSWORD ,
+  database: process.env.DB_NAME ,
 });
 
 db.connect((err) => {
@@ -38,4 +38,3 @@ db.query(createTable, (err) => {
  });
 
 module.exports = db;
-

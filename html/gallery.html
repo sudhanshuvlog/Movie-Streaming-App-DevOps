@@ -75,29 +75,49 @@
     </div>
 
     <script>
-        fetch('http://${API_URL}:3000/movies')
-            .then(response => response.json())
-            .then(data => {
-                const galleryDiv = document.getElementById('gallery');
-                galleryDiv.innerHTML = '';
-
-                data.forEach(movie => {
-                    const galleryItem = document.createElement('div');
-                    galleryItem.classList.add('gallery-item');
-                    galleryItem.innerHTML = `
-                        <img src="${movie.image_url}" alt="${movie.title}">
-                        <h2>${movie.title}</h2>
-                        <p>${movie.genre} - ${movie.release_year}</p>
-                        <a href="watch.html?id=${movie.id}">Watch</a>
-                    `;
-                    galleryDiv.appendChild(galleryItem);
+        // Function to fetch movie data
+        function fetchMovies(url) {
+            return fetch(url)
+                .then(response => response.json())
+                .catch(error => {
+                    console.error('Error:', error);
+                    return [];
                 });
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                document.getElementById('gallery').innerHTML = '<p>Error loading gallery.</p>';
+        }
+
+        // Function to create a gallery item
+        function createGalleryItem(movie) {
+            const galleryItem = document.createElement('div');
+            galleryItem.classList.add('gallery-item');
+            galleryItem.innerHTML = `
+                <img src="${movie.image_url}" alt="${movie.title}">
+                <h2>${movie.title}</h2>
+                <p>${movie.genre} - ${movie.release_year}</p>
+                <a href="watch.html?id=${movie.id}">Watch</a>
+            `;
+            return galleryItem;
+        }
+
+        // Function to render the movie gallery
+        function renderGallery(movies, galleryDiv) {
+            galleryDiv.innerHTML = '';
+            if (movies.length === 0) {
+                galleryDiv.innerHTML = '<p>No movies found.</p>';
+                return;
+            }
+            movies.forEach(movie => {
+                const galleryItem = createGalleryItem(movie);
+                galleryDiv.appendChild(galleryItem);
+            });
+        }
+
+        // Main logic
+        const galleryDiv = document.getElementById('gallery');
+        fetchMovies(`http://${API_URL}:3000/movies`)
+            .then(movies => renderGallery(movies, galleryDiv))
+            .catch(() => {
+                galleryDiv.innerHTML = '<p>Error loading gallery.</p>';
             });
     </script>
 </body>
 </html>
-
