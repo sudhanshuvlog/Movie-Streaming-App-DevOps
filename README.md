@@ -59,22 +59,23 @@ The project follows a multi-container Docker architecture consisting of three ma
 3. **Jenkins Setup**:
 
 - Launch Jenkins Server:
-  ```bash
+    ```bash
     docker run -p 8080:8080 -p 50000:50000 -dit --name jenkins --restart=on-failure -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts-jdk17
     ```
 
 - Configure Jenkins Slave Node:
-   On your Jenkins slave node, install JDK 17(You can make your base Ec2 Instance as slave node):
+   - Follow this doc to add a agent in Jenkins https://www.jenkins.io/doc/book/using/using-agents/
+   - On your Jenkins slave node, install JDK 17(You can make your base Ec2 Instance as slave node):
     
     ``` bash
     wget https://download.oracle.com/java/17/archive/jdk-17.0.10_linux-x64_bin.rpm
     yum install jdk-17.0.10_linux-x64_bin.rpm -y
     ```
-    Start the agent and join it to the Jenkins Master Node using the provided join command.
+    - Start the agent and join it to the Jenkins Master Node using the provided join command.
 
 4. **SonarQube Configuration**
     
-    The SonarQube server will be hosted on an AWS EC2 instance(you can host it on same ec2 instance where jenkins server is running). Refer to the `docker-compose.yml` in the `/build` directory for setting up the SonarQube server.
+    - The SonarQube server will be hosted on an AWS EC2 instance(you can host it on same ec2 instance where jenkins server is running). Refer to the `docker-compose.yml` in the `/build` directory for setting up the SonarQube server.
 
     ``` bash
     sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
@@ -129,6 +130,12 @@ The project follows a multi-container Docker architecture consisting of three ma
 7. **Contact**
 
     For any inquiries or issues, please contact [me](https://www.linkedin.com/in/sudhanshu--pandey/)
+
+### Latest Docker Image
+    - My Latest docker image for this project are present here, You can use this image as well, If you don't wanted to build your own image
+        - https://hub.docker.com/r/jinny1/movie-streaming-frontend
+        - https://hub.docker.com/r/jinny1/movie-streaming-backend-nodejs
+
 
 
 ### Code Explanation
@@ -222,7 +229,7 @@ The project follows a multi-container Docker architecture consisting of three ma
 
         1. Ensure Docker and Docker Compose are installed.
         2. Run `docker-compose up -d` to start all services.
-        3. Access the backend via `<EC2 Instance Public IP>:3000` and the frontend via `<EC2 Instance Public IP:80`.
+        3. Access the backend via `<EC2 Instance Public IP>:3000` and the frontend via `<EC2 Instance Public IP>:80`.
 
 
 
