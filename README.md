@@ -52,7 +52,8 @@ The project follows a multi-container Docker architecture consisting of three ma
    ```
 
 2. **Launch Server**
-    Launch and AWS EC2 Instance with `t2.medium` as Instance Type, and Give atleast 15GB of EBS Volume
+    Launch and AWS EC2 Instance with `t2.medium` as Instance Type, and Give atleast 15GB of EBS Volume.
+    In `Security Group` you can allow all the trafic.
 
 3. **Jenkins Setup**:
 
@@ -80,6 +81,8 @@ The project follows a multi-container Docker architecture consisting of three ma
     docker-compose --version
     docker-compose up -d
     ```
+    
+    - Now SonarQube Server would be running on port no 9000, you can hit to <EC2 Public IP:9000>, by default the username and password of Sonarqube will be `admin`
 
 5. **AWS S3 Bucket**
 
