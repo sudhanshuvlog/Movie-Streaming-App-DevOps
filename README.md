@@ -53,8 +53,8 @@ The project follows a multi-container Docker architecture consisting of three ma
         ```
 
 2. **Launch Server**
-    Launch and AWS EC2 Instance with `t2.medium` as Instance Type, and Give atleast 15GB of EBS Volume.
-    In `Security Group` you can allow all the trafic.
+    - Launch an AWS EC2 Instance with `t2.medium` as Instance Type, and Give atleast 15GB of EBS Volume.
+    - In `Security Group` you can allow all the trafic.
 
 3. **Jenkins Setup**:
 
