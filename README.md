@@ -72,6 +72,10 @@ The project follows a multi-container Docker architecture consisting of three ma
     yum install jdk-17.0.10_linux-x64_bin.rpm -y
     ```
     - Start the agent and join it to the Jenkins Master Node using the provided join command.
+    - Install `git` in slave node, as it will be further used while cloning the repo
+        ```bash
+        yum install git -y
+        ```
 
 4. **SonarQube Configuration**
     
@@ -88,7 +92,24 @@ The project follows a multi-container Docker architecture consisting of three ma
 
 5. **AWS S3 Bucket**
 
-    Media files are stored securely in an AWS S3 bucket, Hence we need to create an AWS S3 bucket which will be further used by our application, In my case i have created an s3 bucket with the name `moviebucketsudhanshuvlog` in the ap-south-1 region, If you wanted to change the bucket name, then you can update the variable called `Bucket` in the `app.js` file
+    - Media files are stored securely in an AWS S3 bucket, Hence we need to create an AWS S3 bucket which will be further used by our application, In my case i have created an s3 bucket with the name `moviebucketsudhanshuvlog` in the ap-south-1 region, If you wanted to change the bucket name, then you can update the variable called `Bucket` in the `app.js` file
+    - Once you have created the bucket in AWS, You also need to enable the public access to the bucket, 
+    and you have to add an bucket policy(which will allow you to get the objects stored in bucket), In the below bucket policy just modify your `ARN Number`
+
+        ```
+        {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Sid": "PublicReadGetObject",
+                "Effect": "Allow",
+                "Principal": "*",
+                "Action": "s3:GetObject",
+                "Resource": "<ARN Number>/*"
+            }
+        ]
+        }
+        ```
 
 6. **Continuous Integration & Deployment**
 
@@ -127,14 +148,24 @@ The project follows a multi-container Docker architecture consisting of three ma
             AWS_SECRET_ACCESS_KEY=your-secret-key
             ```
 
-7. **Contact**
+7. **Latest Docker Image**
+- My Latest docker image for this project are present here, You can use this image as well, If you don't wanted to build your own image
+    - https://hub.docker.com/r/jinny1/movie-streaming-frontend
+    - https://hub.docker.com/r/jinny1/movie-streaming-backend-nodejs
 
+8. **Debugging Steps**
+    
+    - Stopping Containers:
+        Use `docker-compose down` to gracefully terminate all containers created by the docker-compose file. This command also removes the networks created by docker-compose up, making it useful when you need to clean up the environment before redeploying.
+
+    - Checking Logs:
+        To diagnose issues with a specific container, such as `node-app`, use `docker logs node-app`. This command displays the container's logs, which can be crucial for identifying problems like a failed connection to a database.
+
+    - Restarting Containers:
+        If node-app fails to connect to the database, one potential solution is to restart the container using `docker restart node-app`. This action can reinitialize the connection and resolve transient issues without requiring a full stack restart.
+
+9. **Contact**
     For any inquiries or issues, please contact [me](https://www.linkedin.com/in/sudhanshu--pandey/)
-
-### Latest Docker Image
-    - My Latest docker image for this project are present here, You can use this image as well, If you don't wanted to build your own image
-        - https://hub.docker.com/r/jinny1/movie-streaming-frontend
-        - https://hub.docker.com/r/jinny1/movie-streaming-backend-nodejs
 
 
 
