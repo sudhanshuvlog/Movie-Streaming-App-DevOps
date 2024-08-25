@@ -44,12 +44,13 @@ The project follows a multi-container Docker architecture consisting of three ma
 
 ### Running the Application
 
-1. **Clone the repository**:
-
-   ```bash
-   git clone https://github.com/sudhanshuvlog/Movie-Streaming-App-DevOps.git
-   cd Movie-Streaming-App-DevOps
-   ```
+1. **Fork & Clone the repository**:
+    - Fork the repository https://github.com/sudhanshuvlog/Movie-Streaming-App-DevOps.git
+    - Once you have forked the repo on your github account, Clone the repo in your system
+        ```bash
+        git clone <your repo URL>
+        cd Movie-Streaming-App-DevOps
+        ```
 
 2. **Launch Server**
     Launch and AWS EC2 Instance with `t2.medium` as Instance Type, and Give atleast 15GB of EBS Volume.
