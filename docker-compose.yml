@@ -5,7 +5,7 @@ services:
     image: jinny1/movie-streaming-backend-nodejs:latest
     container_name: node-app
     environment:
-      DB_HOST: 3.109.157.38
+      DB_HOST: 52.66.197.154
       DB_USER: admin
       DB_PASSWORD: redhat
       DB_NAME: movie_db
@@ -22,7 +22,7 @@ services:
     image: jinny1/movie-streaming-frontend:latest
     container_name: web
     environment:
-      API_URL: 3.109.157.38
+      API_URL: 52.66.197.154
     ports:
       - "80:80"
 
