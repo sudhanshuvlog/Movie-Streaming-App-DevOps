@@ -131,22 +131,47 @@ The project follows a multi-container Docker architecture consisting of three ma
 
         - Define your pipeline in Jenkins, which will use the `./docker-compose.yml` file to start all the services(frontend, backend and database).
 
-        - You need to change the IP of your EC2 Instance in the `./docker-compose.yml` file, Just replace the IP address defined in the environmental variable for `node-app` the keyword name is `DB_HOST`
+        - **IMP** You need to change the IP of your EC2 Instance in the `./docker-compose.yml` file, Just replace the IP address defined in the environmental variable for `node-app` the keyword name is `DB_HOST`
         and in `web` the keyword name os `API_URL`
 
-        - Create a .env file in your jenkins slave node from where you are going to execute the above `docker-compose.yml` file:
+        - Manuall Deployment(optional)
 
-            Create a .env file in the root directory to store your environment variables. This file should include your AWS S3 credentials, and other sensitive information.
-            
-            ```bash
-            touch .env
-            ```
+            - Create a .env file in your jenkins slave node from where you are going to execute the above `docker-compose.yml` file:
 
-            Example .env file:
-            ```
-            AWS_ACCESS_KEY_ID=your-access-key
-            AWS_SECRET_ACCESS_KEY=your-secret-key
-            ```
+                Create a .env file in the root directory to store your environment variables. This file should include your AWS S3 credentials, and other sensitive information.
+                
+                ```bash
+                touch .env
+                ```
+
+                Example .env file:
+                ```
+                AWS_ACCESS_KEY_ID=your-access-key
+                AWS_SECRET_ACCESS_KEY=your-secret-key
+                ```
+        - **Automation Deployment With Jenkins** 
+            - Create a Credential in Jenkins:
+                - Go to Jenkins and create a new credential.
+                - Select "Secret file" and upload your .env file from your system.
+                - Give an ID to this secret, which will be referenced in your Jenkinsfile.
+                
+            - Set Up the Jenkins Pipeline:
+
+                - Create a new pipeline job in Jenkins.
+                - Configure the Source Code Management (SCM) with your GitHub repository URL.
+                - Enable webhooks for seamless integration by going to GitHub and allowing a webhook with the path http://<Jenkins-IP>:8080/github-webhook/. This ensures Jenkins triggers automatically when changes are pushed to the repository.
+                
+            - Jenkinsfile Configuration `Jenkinsfile`:
+
+                - The pipeline configuration is defined in a Jenkinsfile. This script specifies the environment, stages, and steps for the deployment process.
+                - The environment variable ENV loads the credentials from the secret file you uploaded earlier.
+                - Deployment Steps:
+
+                    - Stage: Deploy the Multi-Container Application:
+                    - Copy the Environment File: The .env file is copied to the current directory using the command sh 'cp $ENV .env'.
+                    - Pull the Latest Docker Images: sh 'docker-compose pull' pulls the latest images for your services defined in the docker-compose.yml file.
+                    - Stop and Remove Existing Containers: The existing web and node-app containers are stopped and removed to ensure that old containers are deleted before starting new ones with updated images.
+                    - Start New Containers: Finally, sh 'docker-compose up -d' starts the containers from the new Docker images, ensuring the application is up-to-date.
 
 7. **Latest Docker Image**
 - My Latest docker image for this project are present here, You can use this image as well, If you don't wanted to build your own image
