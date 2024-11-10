@@ -148,6 +148,7 @@ The project follows a multi-container Docker architecture consisting of three ma
                 ```
                 AWS_ACCESS_KEY_ID=your-access-key
                 AWS_SECRET_ACCESS_KEY=your-secret-key
+                DB_HOST=your-server-public-ip
                 ```
         - **Automation Deployment With Jenkins** 
             - Create a Credential in Jenkins:
