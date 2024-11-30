@@ -102,7 +102,7 @@
         function renderGallery(movies, galleryDiv) {
             galleryDiv.innerHTML = '';
             if (movies.length === 0) {
-                galleryDiv.innerHTML = '<p>No movies found.</p>';
+                galleryDiv.innerHTML = '<p>No movies found try again.</p>';
                 return;
             }
             movies.forEach(movie => {
