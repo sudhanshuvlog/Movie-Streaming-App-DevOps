@@ -85,7 +85,7 @@ The project follows a multi-container Docker architecture consisting of three ma
     sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
     chmod +x /usr/local/bin/docker-compose
     docker-compose --version
-    docker-compose up -d
+    docker-compose up -d #please switch to `/build` folder, as the sonarqube docker-compose file is present there.
     ```
     
     - Now SonarQube Server would be running on port no 9000, you can hit to <EC2 Public IP:9000>, by default the username and password of Sonarqube will be `admin`
