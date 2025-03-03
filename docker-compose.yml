@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   node-app:
-    image: jinny1/movie-streaming-backend-nodejs:latest
+    image: manyu/movie-streaming-backend-nodejs:latest
     container_name: node-app
     environment:
       DB_HOST: ${DB_HOST}
@@ -19,11 +19,11 @@ services:
         condition: service_healthy
 
   web:
-    image: jinny1/movie-streaming-frontend:latest
+    image: manyu/movie-streaming-frontend:latest
     container_name: web
     environment:
-      API_URL: ${DB_HOST}
-    ports:
+      API_URL: ${DB_HOST}  
+    ports: 
       - "80:80"
 
   mysql-db:
