@@ -19,7 +19,7 @@ services:
         condition: service_healthy
 
   web:
-    image: manyu/movie-streaming-frontend:latest
+    image: abhimanyu894031/movie-streaming-frontend:latest
     container_name: web
     environment:
       API_URL: ${DB_HOST}  
