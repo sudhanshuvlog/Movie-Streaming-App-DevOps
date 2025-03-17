@@ -2,10 +2,10 @@ version: '3.8'
 
 services:
   node-app:
-    image: jinny1/movie-streaming-backend-nodejs:latest
+    image: shivamydv17/movie-streaming-backend-nodejs:latest
     container_name: node-app
     environment:
-      DB_HOST: ${DB_HOST}
+      DB_HOST: 54.145.13.54
       DB_USER: admin
       DB_PASSWORD: redhat
       DB_NAME: movie_db
@@ -19,10 +19,10 @@ services:
         condition: service_healthy
 
   web:
-    image: jinny1/movie-streaming-frontend:latest
+    image: shivamydv17/movie-streaming-frontend:latest
     container_name: web
     environment:
-      API_URL: ${DB_HOST}
+      API_URL: 54.145.13.54
     ports:
       - "80:80"
 
