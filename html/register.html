@@ -1,109 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register Movie</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            color: #333;
-            text-align: center;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        input, textarea, button {
-            padding: 10px;
-            border-radius: 4px;
-            border: 1px solid #ddd;
-        }
-        input[type="file"] {
-            padding: 0;
-        }
-        button {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register Movie</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Helvetica Neue', sans-serif;
+      background-color: #141414;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .form-container {
+      background-color: #1e1e1e;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
+      max-width: 500px;
+      width: 90%;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #e50914;
+    }
+
+    label {
+      font-size: 14px;
+      margin-bottom: 5px;
+      color: #ddd;
+    }
+
+    input, textarea, button {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: none;
+      border-radius: 6px;
+      background-color: #333;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    input[type="file"] {
+      padding: 8px;
+      background-color: #222;
+    }
+
+    textarea {
+      resize: vertical;
+      height: 80px;
+    }
+
+    button {
+      background-color: #e50914;
+      color: #fff;
+      font-weight: bold;
+      transition: background 0.3s ease;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #b20710;
+    }
+
+    ::placeholder {
+      color: #999;
+    }
+
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Register Movie</h1>
-        <form id="register-form">
-            <label for="title">Title</label>
-            <input type="text" id="title" name="title" required>
+  <div class="form-container">
+    <h1>Register Movie</h1>
+    <form id="register-form">
+      <label for="title">Title</label>
+      <input type="text" id="title" name="title" placeholder="Enter movie title" required />
 
-            <label for="genre">Genre</label>
-            <input type="text" id="genre" name="genre" required>
+      <label for="genre">Genre</label>
+      <input type="text" id="genre" name="genre" placeholder="e.g. Action, Drama" required />
 
-            <label for="description">Description</label>
-            <textarea id="description" name="description"></textarea>
+      <label for="description">Description</label>
+      <textarea id="description" name="description" placeholder="Brief summary..."></textarea>
 
-            <label for="rating">Rating</label>
-            <input type="number" id="rating" name="rating" step="0.1" min="0" max="10">
+      <label for="rating">Rating</label>
+      <input type="number" id="rating" name="rating" step="0.1" min="0" max="10" placeholder="0.0 - 10.0" />
 
-            <label for="release_year">Release Year</label>
-            <input type="number" id="release_year" name="release_year" min="1900" max="2099">
+      <label for="release_year">Release Year</label>
+      <input type="number" id="release_year" name="release_year" min="1900" max="2099" placeholder="e.g. 2024" />
 
-            <label for="image">Image</label>
-            <input type="file" id="image" name="image" accept="image/*">
+      <label for="image">Upload Poster</label>
+      <input type="file" id="image" name="image" accept="image/*" />
 
-            <label for="video">Video</label>
-            <input type="file" id="video" name="video" accept="video/*">
+      <label for="video">Upload Trailer</label>
+      <input type="file" id="video" name="video" accept="video/*" />
 
-            <button type="submit">Register Movie</button>
-        </form>
-    </div>
+      <button type="submit">Submit Movie</button>
+    </form>
+  </div>
 
-    <script>
-        document.getElementById('register-form').addEventListener('submit', function(event) {
-            event.preventDefault();
+  <script>
+    document.getElementById('register-form').addEventListener('submit', function(event) {
+      event.preventDefault();
 
-            const formData = new FormData();
-            formData.append('title', document.getElementById('title').value);
-            formData.append('genre', document.getElementById('genre').value);
-            formData.append('description', document.getElementById('description').value);
-            formData.append('rating', document.getElementById('rating').value);
-            formData.append('release_year', document.getElementById('release_year').value);
-            formData.append('image', document.getElementById('image').files[0]);
-            formData.append('video', document.getElementById('video').files[0]);
+      const formData = new FormData();
+      formData.append('title', document.getElementById('title').value);
+      formData.append('genre', document.getElementById('genre').value);
+      formData.append('description', document.getElementById('description').value);
+      formData.append('rating', document.getElementById('rating').value);
+      formData.append('release_year', document.getElementById('release_year').value);
+      formData.append('image', document.getElementById('image').files[0]);
+      formData.append('video', document.getElementById('video').files[0]);
 
-            fetch('http://${API_URL}:3000/movies', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert('Movie registered successfully..!');
-                document.getElementById('register-form').reset();
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error registering movie.');
-            });
-        });
-    </script>
+      fetch('http://${API_URL}:3000/movies', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert('Movie registered successfully!');
+        document.getElementById('register-form').reset();
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Error registering movie.');
+      });
+    });
+  </script>
 </body>
 </html>
-
