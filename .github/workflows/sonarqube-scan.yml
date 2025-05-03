@@ -28,6 +28,9 @@ jobs:
 
       - name: Run tests with coverage
         run: npm test
+      
+      - run: |
+          ls coverage/
   
   sonarqubeanalysis:
     name: Build and analyze
