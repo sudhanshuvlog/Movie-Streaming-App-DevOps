@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  DB_HOST: database-1.cbaw4kes2epe.ap-south-1.rds.amazonaws.com
+  DB_USER: admin
+  DB_NAME: moviedb
+  AWS_REGION: ap-south-1
+  API_URL: 13.232.244.211
