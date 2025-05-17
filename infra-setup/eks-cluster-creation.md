@@ -1,0 +1,13 @@
+eksctl create cluster \
+  --name EKS17  \
+  --region ap-south-1 \
+  --vpc-public-subnets=subnet-0e64ffc947ac8929c,subnet-04c1ed6ba9c55ffd7 \
+  --nodegroup-name default-ng \
+  --node-type t3.medium \
+  --nodes=2 \
+  --nodes-min=2 \
+  --nodes-max=2 \
+  --node-volume-size=20 \
+  --ssh-access \
+  --ssh-public-key DevOps \
+  --managed
