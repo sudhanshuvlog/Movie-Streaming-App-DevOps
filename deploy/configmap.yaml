@@ -7,4 +7,3 @@ data:
   DB_USER: admin
   DB_NAME: moviedb
   AWS_REGION: ap-south-1
-  API_URL: 13.232.244.211
