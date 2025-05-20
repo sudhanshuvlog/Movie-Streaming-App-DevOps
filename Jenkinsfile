@@ -37,14 +37,6 @@ pipeline {
       string(credentialsId: 'aws-access-key', variable: 'AWS_ACCESS_KEY_ID'),
       string(credentialsId: 'aws-secret-key', variable: 'AWS_SECRET_ACCESS_KEY')
     ]) {
-      withKubeCredentials(kubectlCredentials: [[
-        caCertificate: '',
-        clusterName: 'EKS-17',
-        contextName: '',
-        credentialsId: 'k8-token',
-        namespace: 'default',
-        serverUrl: 'https://1DA2BF960ED718541EE5A2222FC79F18.gr7.ap-south-1.eks.amazonaws.com'
-      ]]) {
         sh '''
           kubectl delete secret app-secrets --ignore-not-found
           kubectl create secret generic app-secrets \
@@ -68,7 +60,6 @@ pipeline {
         }
         sh "kubectl apply -f deploy/deployment-web.yaml"
         sh "kubectl apply -f deploy/service-web.yaml"
-      }
     }
   }
 }
@@ -76,17 +67,8 @@ pipeline {
 
     stage('Verify Deployment') {
       steps {
-        withKubeCredentials(kubectlCredentials: [[
-          caCertificate: '',
-          clusterName: 'EKS-17',
-          contextName: '',
-          credentialsId: 'k8-token',
-          namespace: 'default',
-          serverUrl: 'https://1DA2BF960ED718541EE5A2222FC79F18.gr7.ap-south-1.eks.amazonaws.com'
-        ]]) {
           sh "kubectl get svc"
         }
-      }
     }
   }
 }
