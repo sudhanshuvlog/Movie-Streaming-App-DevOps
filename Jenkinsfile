@@ -7,6 +7,15 @@ pipeline {
         git branch: 'dev', url: 'https://github.com/sudhanshuvlog/Movie-Streaming-App-DevOps.git'
       }
     }
+    stage('Unit Tests') {
+      steps {
+        sh '''
+          yum install -y nodejs
+          npm install
+          npm test
+        '''
+      }
+    }
     stage('Docker Build and Push') {
     steps {
         withCredentials([
