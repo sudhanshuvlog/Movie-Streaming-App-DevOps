@@ -2,7 +2,7 @@
 
 The architecture diagram below illustrates the interactions between the services:
 
-![Architecture Diagram](./Screenshots/project-architecture.png)
+![Architecture Diagram](Screenshots/project-architecture_EKS.png)
 
 
 ## Overview
@@ -14,7 +14,7 @@ The DevOps Movie Streaming App is a FullStack application built using **Express*
 - **Search**: Provides a search interface to find movies by title or genre.
 - **Watch**: Enables users to watch selected movies.
 
-![Movie Gallery](Screenshots/demo.png)
+![Movie Gallery](Screenshots/demo_app.png)
 
 The backend is built using Express.js and exposes an API endpoint at `/movies` for managing movie data. Movie media files (images and videos) are uploaded to an AWS S3 bucket using the AWS SDK.
 
