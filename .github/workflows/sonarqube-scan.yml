@@ -1,16 +1,17 @@
 name: Build
 
 on:
-  # push:
-  #   branches:
-  #     - main
+  push:
+    branches:
+      - dev1
   pull_request:
-    branches: ["main"]
-    paths-ignore:
-      - 'README.md'
+    branches: ["dev"]
+    # paths-ignore:
+    #   - 'README.md'
 
 
 jobs:
+  
   sonarqubeanalysis:
     name: Build and analyze
     runs-on: ubuntu-latest

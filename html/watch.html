@@ -6,32 +6,42 @@
     <title>Watch Movie</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
             margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
+            padding: 0;
+            background-color: #141414;
+            color: #fff;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
         }
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: #fff;
+            max-width: 1000px;
+            margin: 40px auto;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #1c1c1c;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
         }
         h1 {
-            color: #333;
             text-align: center;
+            font-size: 2.5em;
+            color: #e50914;
+            margin-bottom: 20px;
         }
         video {
-            display: block;
-            margin: 0 auto;
             width: 100%;
-            max-width: 800px;
+            max-width: 960px;
             border-radius: 8px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
         }
         .movie-info {
+            margin-top: 20px;
+            font-size: 1.2em;
             text-align: center;
+            color: #ccc;
+        }
+        p#error-message {
+            text-align: center;
+            color: red;
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -45,7 +55,8 @@
     </div>
 
     <script>
-        // Get movie ID from URL
+        const API_URL = 'localhost'; // Replace with your backend host
+
         const urlParams = new URLSearchParams(window.location.search);
         const movieId = urlParams.get('id');
 
@@ -55,18 +66,17 @@
                 .then(movie => {
                     const videoElement = document.getElementById('movie-video');
                     const descriptionElement = document.getElementById('movie-description');
-                    
+
                     videoElement.src = movie.video_url;
                     descriptionElement.textContent = `${movie.title} (${movie.release_year}) - ${movie.genre}`;
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    document.getElementById('movie-info').innerHTML = '<p>Error loading movie.</p>';
+                    document.getElementById('movie-info').innerHTML = '<p id="error-message">Error loading movie.</p>';
                 });
         } else {
-            document.getElementById('movie-info').innerHTML = '<p>Movie ID not provided.</p>';
+            document.getElementById('movie-info').innerHTML = '<p id="error-message">Movie ID not provided.</p>';
         }
     </script>
 </body>
 </html>
-
