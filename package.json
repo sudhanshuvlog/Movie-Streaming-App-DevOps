@@ -14,9 +14,9 @@
     "cors": "^2.8.5",
     "aws-sdk": "^2.1413.0",
     "@aws-sdk/client-s3": "^3.497.0",
-    "jtest": "^1.0.0",
-    "jest": "^29.7.0",
-  "supertest": "^6.3.3"
+    "jtest": "*",
+    "jest": "*",
+  "supertest": "*"
   },
   "devDependencies": {
     "jest": "^29.7.0",
