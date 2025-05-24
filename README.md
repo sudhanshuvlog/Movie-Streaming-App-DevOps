@@ -1,9 +1,9 @@
 # Devops-Movie-Streaming-APP
 
-📺 Missed the sessions? Watch the full workshop here:
-- 🔗 Day1(DevOps lifecycle walkthrough, Linux Essentials and virtualization, Introduction to key AWS services): https://lnkd.in/eY2aNvbG
-- 🔗 Day2(Docker): https://lnkd.in/ewUmR7da
-- 🔗 Day3(Movie Streaming App practical & EKS): https://lnkd.in/edtT8y_7
+📺 Missed the sessions? Watch the full workshop here(Youtube):
+- 🔗 Day1(Introduction to Devops): https://www.youtube.com/watch?v=JRmV_mKnnyU
+- 🔗 Day2(Docker): https://www.youtube.com/watch?v=b0jb_uC9Dck
+- 🔗 Day3(Movie Streaming App practical & EKS): https://www.youtube.com/watch?v=Cy4nay9PcA4
 
 The architecture diagram below illustrates the interactions between the services:
 
