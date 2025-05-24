@@ -1,5 +1,10 @@
 # Devops-Movie-Streaming-APP
 
+📺 Missed the sessions? Watch the full workshop here:
+ 🔗 Day1: https://lnkd.in/eY2aNvbG
+🔗 Day2: https://lnkd.in/ewUmR7da
+🔗 Day3: https://lnkd.in/edtT8y_7
+
 The architecture diagram below illustrates the interactions between the services:
 
 ![Architecture Diagram](Screenshots/project-architecture_EKS.png)
