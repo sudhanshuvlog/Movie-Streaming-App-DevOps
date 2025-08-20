@@ -5,7 +5,7 @@ services:
     image: meenaksheemahapatra/movie-streaming-backend-nodejs:latest
     container_name: node-app
     environment:
-      DB_HOST: ${DB_HOST}
+      DB_HOST: 13.127.176.233
       DB_USER: admin
       DB_PASSWORD: redhat
       DB_NAME: movie_db
@@ -22,7 +22,7 @@ services:
     image: meenaksheemahapatra/movie-streaming-frontend:latest
     container_name: web
     environment:
-      API_URL: ${DB_HOST}
+      API_URL: 13.127.176.233
     ports:
       - "80:80"
 
