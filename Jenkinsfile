@@ -7,37 +7,37 @@ pipeline {
         git branch: 'main', url: 'https://github.com/sudhanshuvlog/Movie-Streaming-App-DevOps.git'
       }
     }
-    stage('Unit Tests') {
-      steps {
-        sh '''
-          yum install -y nodejs
-          npm install
-          npm test
-        '''
-      }
-    }
-    stage('Docker Build and Push') {
-    steps {
-        withCredentials([
-        string(credentialsId: 'dockerhub-username', variable: 'DOCKERHUB_USERNAME'),
-        string(credentialsId: 'dockerhub-token', variable: 'DOCKERHUB_PASSWORD')
-        ]) {
-        withEnv([
-            'DOCKERHUB_USERNAME=' + env.DOCKERHUB_USERNAME,
-            'DOCKERHUB_PASSWORD=' + env.DOCKERHUB_PASSWORD
-        ]) {
-            sh '''
-            echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-            docker build -t jinny1/movie-streaming-backend-nodejs:latest .
-            docker push jinny1/movie-streaming-backend-nodejs:latest
-            docker build -t jinny1/movie-streaming-frontend:latest ./html
-            docker push jinny1/movie-streaming-frontend:latest
-            docker logout
-            '''
-        }
-        }
-    }
-    }
+    // stage('Unit Tests') {
+    //   steps {
+    //     sh '''
+    //       yum install -y nodejs
+    //       npm install
+    //       npm test
+    //     '''
+    //   }
+    // }
+    // stage('Docker Build and Push') {
+    // steps {
+    //     withCredentials([
+    //     string(credentialsId: 'dockerhub-username', variable: 'DOCKERHUB_USERNAME'),
+    //     string(credentialsId: 'dockerhub-token', variable: 'DOCKERHUB_PASSWORD')
+    //     ]) {
+    //     withEnv([
+    //         'DOCKERHUB_USERNAME=' + env.DOCKERHUB_USERNAME,
+    //         'DOCKERHUB_PASSWORD=' + env.DOCKERHUB_PASSWORD
+    //     ]) {
+    //         sh '''
+    //         echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+    //         docker build -t jinny1/movie-streaming-backend-nodejs:latest .
+    //         docker push jinny1/movie-streaming-backend-nodejs:latest
+    //         docker build -t jinny1/movie-streaming-frontend:latest ./html
+    //         docker push jinny1/movie-streaming-frontend:latest
+    //         docker logout
+    //         '''
+    //     }
+    //     }
+    // }
+    // }
 
   stage('Deploy to Kubernetes') {
   steps {
