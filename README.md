@@ -1,10 +1,5 @@
 # Devops-Movie-Streaming-APP
 
-📺 Missed the sessions? Watch the full workshop here(Youtube):
-- 🔗 Day1(Introduction to Devops): https://www.youtube.com/watch?v=JRmV_mKnnyU
-- 🔗 Day2(Docker): https://www.youtube.com/watch?v=b0jb_uC9Dck
-- 🔗 Day3(Movie Streaming App practical & EKS): https://www.youtube.com/watch?v=Cy4nay9PcA4
-
 The architecture diagram below illustrates the interactions between the services:
 
 ![Architecture Diagram](Screenshots/project-architecture_EKS.png)
