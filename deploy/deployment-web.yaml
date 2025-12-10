@@ -15,6 +15,7 @@ spec:
       containers:
       - name: web
         image: jinny1/movie-streaming-frontend:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
         env:

@@ -56,6 +56,8 @@ pipeline {
         sh "kubectl apply -f deploy/configmap.yaml"
         sh "kubectl apply -f deploy/deployment-node-app.yaml"
         sh "kubectl apply -f deploy/service-node-app.yaml"
+        sh "kubectl rollout restart deployment node-app"
+        sh "kubectl rollout restart deployment web"
         sh "sleep 30"
         script {
           def apiUrl = sh(
