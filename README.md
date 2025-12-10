@@ -63,7 +63,7 @@ The project follows a multi-container Docker architecture consisting of three ma
 
 - Launch Jenkins Server:
     ```bash
-    docker run -p 8080:8080 -p 50000:50000 -dit --name jenkins --restart=on-failure jenkins:lts-jdk17
+    docker run -p 8080:8080 -p 50000:50000 --restart=on-failure -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts-jdk21
     ```
 
 - Configure Jenkins Slave Node:
