@@ -3,8 +3,6 @@ pipeline {
 
   options {
     timestamps()
-    // disableConcurrentBuilds()
-    // buildDiscarder(logRotator(numToKeepStr: '10'))
   }
 
   environment {
@@ -123,11 +121,26 @@ pipeline {
 
             kubectl apply -f deploy/deployment-node-app.yaml
             kubectl apply -f deploy/service-node-app.yaml
-            kubectl rollout status deployment/node-app --timeout=120s
+            kubectl rollout restart deployment node-app
+          '''
 
+          script {
+            def apiUrl = sh(
+              script: "kubectl get svc node-app-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'",
+              returnStdout: true
+            ).trim()
+
+            echo "Resolved API_URL=${apiUrl}"
+
+            sh """
+              sed 's|\\\${API_URL}|${apiUrl}|g' deploy/webapp-config.yaml | kubectl apply -f -
+            """
+          }
+
+          sh '''
             kubectl apply -f deploy/deployment-web.yaml
             kubectl apply -f deploy/service-web.yaml
-            kubectl rollout status deployment/web --timeout=120s
+            kubectl rollout restart deployment web
           '''
         }
       }
