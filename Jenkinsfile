@@ -11,7 +11,6 @@ pipeline {
     REGISTRY = "jinny1"
     BACKEND_IMAGE = "movie-streaming-backend-nodejs"
     FRONTEND_IMAGE = "movie-streaming-frontend"
-    IMAGE_TAG = "${env.BUILD_NUMBER}-${env.GIT_COMMIT.take(7)}"
     KUBE_NAMESPACE = "default"
   }
 
@@ -38,6 +37,16 @@ pipeline {
         '''
       }
     }
+
+  stage('Set Image Tag') {
+  agent { label 'ec2' }
+  steps {
+    script {
+      env.IMAGE_TAG = "${env.BUILD_NUMBER}-${env.GIT_COMMIT.take(7)}"
+      echo "Using IMAGE_TAG=${env.IMAGE_TAG}"
+    }
+  }
+  }
 
     // stage('SonarQube Analysis') {
     //   environment {
