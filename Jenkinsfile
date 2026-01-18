@@ -111,11 +111,10 @@ pipeline {
               --from-literal=AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
               --dry-run=client -o yaml | kubectl apply -f -
 
-            sed -i "s|IMAGE_BACKEND|$REGISTRY/$BACKEND_IMAGE:$IMAGE_TAG|g" deploy/deployment-node-app.yaml
-            sed -i "s|IMAGE_FRONTEND|$REGISTRY/$FRONTEND_IMAGE:$IMAGE_TAG|g" deploy/deployment-web.yaml
-
             kubectl apply -f deploy/deployment-node-app.yaml
             kubectl apply -f deploy/service-node-app.yaml
+            kubectl set image deployment/node-app \
+                  node-app=$REGISTRY/$BACKEND_IMAGE:$IMAGE_TAG \
             kubectl rollout restart deployment node-app
             sleep 20
           '''
@@ -136,6 +135,8 @@ pipeline {
           sh '''
             kubectl apply -f deploy/deployment-web.yaml
             kubectl apply -f deploy/service-web.yaml
+            kubectl set image deployment/web \
+            web=$REGISTRY/$FRONTEND_IMAGE:$IMAGE_TAG \
             kubectl rollout restart deployment web
           '''
         }
