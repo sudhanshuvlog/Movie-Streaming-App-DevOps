@@ -9,6 +9,9 @@ The architecture diagram below illustrates the interactions between the services
 
 ![Architecture Diagram](Screenshots/project-architecture_EKS.png)
 
+Pipeline
+
+![alt text](Pipeline.png)
 
 ## Overview
 
