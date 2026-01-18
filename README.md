@@ -79,8 +79,12 @@ The project follows a multi-container Docker architecture consisting of three ma
     ```bash
      yum install git -y
     ```
+
     Go to Your docker daemon and open the configuration file at `vi /usr/lib/systemd/system/docker.service` and update `ExecStart` as shown below
     ![alt text](docker-service-update.png)
+
+    Install Plugin named `Docker` and setup the Docker Cloud as:
+    ![alt text](docker-cloud.png)
 
 5. **AWS S3 Bucket**
 
