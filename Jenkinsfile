@@ -142,18 +142,18 @@ pipeline {
     }
   }
 
-  // post {
-  //   failure {
-  //     node('ec2') {
-  //     sh '''
-  //       kubectl rollout undo deployment/node-app || true
-  //       kubectl rollout undo deployment/web || true
-  //     '''
-  //   }
-  //   }
+  post {
+    failure {
+      node('ec2') {
+      sh '''
+        kubectl rollout undo deployment/node-app || true
+        kubectl rollout undo deployment/web || true
+      '''
+    }
+    }
 
-  //   success {
-  //     echo "Production deployment successful"
-  //   }
-  // }
+    success {
+      echo "Production deployment successful"
+    }
+  }
 }
