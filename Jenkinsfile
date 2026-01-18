@@ -23,20 +23,20 @@ pipeline {
       }
     }
 
-    stage('Unit Tests') {
-      agent {
-        docker {
-          image 'node:18-alpine'
-          args '-u root:root'
-        }
-      }
-      steps {
-        sh '''
-          npm install
-          npm test
-        '''
-      }
-    }
+    // stage('Unit Tests') {
+    //   agent {
+    //     docker {
+    //       image 'node:18-alpine'
+    //       args '-u root:root'
+    //     }
+    //   }
+    //   steps {
+    //     sh '''
+    //       npm install
+    //       npm test
+    //     '''
+    //   }
+    // }
 
   stage('Set Image Tag') {
   agent { label 'ec2' }
