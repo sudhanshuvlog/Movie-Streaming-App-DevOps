@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: node-app
-        image: jinny1/movie-streaming-backend-nodejs:latest
+        image: movie-streaming-backend-nodejs
         imagePullPolicy: Always
         ports:
         - containerPort: 3000

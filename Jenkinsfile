@@ -14,7 +14,7 @@ pipeline {
 
   stages {
 
-    stage('Checkout') {
+    stage('Checkout') { // job1
       agent { label 'ec2' }
       steps {
         checkout scm
@@ -117,6 +117,7 @@ pipeline {
             kubectl apply -f deploy/deployment-node-app.yaml
             kubectl apply -f deploy/service-node-app.yaml
             kubectl rollout restart deployment node-app
+            sleep 20
           '''
 
           script {
