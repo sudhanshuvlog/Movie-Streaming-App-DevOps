@@ -22,12 +22,7 @@ pipeline {
     }
 
     stage('Unit Tests') {
-      agent {
-        docker {
-          image 'node:18-alpine'
-          args '-u root:root'
-        }
-      }
+      agent {dockerContainer 'jinny1/jenkins-slave-with-npm-support'}
       steps {
         sh '''
           npm install
