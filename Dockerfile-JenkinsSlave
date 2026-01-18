@@ -1,0 +1,38 @@
+# Use a slim, stable base image
+FROM amazonlinux:latest
+
+RUN yum -y update && \
+    yum -y install \
+        git \
+        wget \
+        openssh-server \
+        shadow-utils \
+        python3 \
+        unzip \
+        curl \
+        sudo \
+        tar \
+        gzip \
+        which \
+    && yum clean all \
+    && rm -rf /var/cache/yum
+
+
+RUN yum install -y nodejs && \
+    yum clean all && rm -rf /var/cache/yum
+
+# Install Oracle JDK 21
+RUN wget -q https://download.oracle.com/java/21/latest/jdk-21_linux-x64_bin.rpm && \
+    yum install -y jdk-21_linux-x64_bin.rpm && \
+    rm -f jdk-21_linux-x64_bin.rpm
+
+# Configure SSH securely
+COPY sshd_config /etc/ssh/sshd_config
+RUN ssh-keygen -A && \
+    echo 'root:redhat' | chpasswd
+
+# Expose SSH port if needed
+EXPOSE 22
+
+# Start SSHD
+CMD ["/usr/sbin/sshd", "-D"]

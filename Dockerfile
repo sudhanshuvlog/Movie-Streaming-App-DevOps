@@ -11,16 +11,10 @@ COPY package*.json ./
 RUN npm install
 
 # Copy the rest of the application code
-COPY . .
+COPY app.js .
 
 # Expose the port the app runs on
 EXPOSE 3000
-
-# Set environment variables for the MySQL connection
-ENV DB_USER=admin
-ENV DB_PASSWORD=redhat
-ENV DB_NAME=movie_db
-ENV AWS_REGION=ap-south-1
 
 # Start the application
 CMD [ "node", "app.js" ]

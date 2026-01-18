@@ -76,13 +76,15 @@ The project follows a multi-container Docker architecture consisting of three ma
     ```
     - Start the agent and join it to the Jenkins Master Node using the provided join command.
     - Install `git` in slave node, as it will be further used while cloning the repo
-        ```bash
-        yum install git -y
-        ```
+    ```bash
+     yum install git -y
+    ```
+    Go to Your docker daemon and open the configuration file at `vi /usr/lib/systemd/system/docker.service` and update `ExecStart` as shown below
+    ![alt text](docker-service-update.png)
 
 5. **AWS S3 Bucket**
 
-    - Media files are stored securely in an AWS S3 bucket, Hence we need to create an AWS S3 bucket which will be further used by our application, In my case i have created an s3 bucket with the name `moviebucketsudhanshuvlog` in the ap-south-1 region, If you wanted to change the bucket name, then you can update the variable called `Bucket` in the `app.js` file
+    - Media files are stored securely in an AWS S3 bucket, Hence we need to create an AWS S3 bucket which will be further used by our application, In my case i have created an s3 bucket with the name `gfg37moviebucket` in the ap-south-1 region, If you wanted to change the bucket name, then you can update the variable called `Bucket` in the `app.js` file
     - Once you have created the bucket in AWS, You also need to enable the public access to the bucket, 
     and you have to add an bucket policy(which will allow you to get the objects stored in bucket), In the below bucket policy just modify your `ARN Number`
 
