@@ -1,85 +1,134 @@
 pipeline {
   agent { label 'ec2' }
 
+  options {
+    timestamps()
+    disableConcurrentBuilds()
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+  }
+
+  environment {
+    REGISTRY = "jinny1"
+    BACKEND_IMAGE = "movie-streaming-backend-nodejs"
+    FRONTEND_IMAGE = "movie-streaming-frontend"
+    IMAGE_TAG = "${env.BUILD_NUMBER}-${env.GIT_COMMIT.take(7)}"
+    KUBE_NAMESPACE = "default"
+  }
+
   stages {
+
     stage('Checkout') {
       steps {
-        git branch: 'main', url: 'https://github.com/sudhanshuvlog/Movie-Streaming-App-DevOps.git'
+        checkout scm
       }
     }
-    // stage('Unit Tests') {
+
+    stage('Unit Tests') {
+      steps {
+        sh '''
+          npm install
+          npm test
+        '''
+      }
+    }
+
+    // stage('SonarQube Analysis') {
+    //   environment {
+    //     SONAR_TOKEN = credentials('sonarqube-token')
+    //   }
     //   steps {
     //     sh '''
-    //       yum install -y nodejs
-    //       npm install
-    //       npm test
+    //       sonar-scanner \
+    //       -Dsonar.projectKey=movie-streaming \
+    //       -Dsonar.sources=. \
+    //       -Dsonar.host.url=http://sonarqube:9000 \
+    //       -Dsonar.login=$SONAR_TOKEN
     //     '''
     //   }
     // }
-    // stage('Docker Build and Push') {
-    // steps {
-    //     withCredentials([
-    //     string(credentialsId: 'dockerhub-username', variable: 'DOCKERHUB_USERNAME'),
-    //     string(credentialsId: 'dockerhub-token', variable: 'DOCKERHUB_PASSWORD')
-    //     ]) {
-    //     withEnv([
-    //         'DOCKERHUB_USERNAME=' + env.DOCKERHUB_USERNAME,
-    //         'DOCKERHUB_PASSWORD=' + env.DOCKERHUB_PASSWORD
-    //     ]) {
-    //         sh '''
-    //         echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-    //         docker build -t jinny1/movie-streaming-backend-nodejs:latest .
-    //         docker push jinny1/movie-streaming-backend-nodejs:latest
-    //         docker build -t jinny1/movie-streaming-frontend:latest ./html
-    //         docker push jinny1/movie-streaming-frontend:latest
-    //         docker logout
-    //         '''
+
+    // stage('Quality Gate') {
+    //   steps {
+    //     timeout(time: 5, unit: 'MINUTES') {
+    //       waitForQualityGate abortPipeline: true
     //     }
-    //     }
-    // }
+    //   }
     // }
 
-  stage('Deploy to Kubernetes') {
-  steps {
-    withCredentials([
-      string(credentialsId: 'db-password', variable: 'DB_PASSWORD'),
-      string(credentialsId: 'aws-access-key', variable: 'AWS_ACCESS_KEY_ID'),
-      string(credentialsId: 'aws-secret-key', variable: 'AWS_SECRET_ACCESS_KEY')
-    ]) {
-        sh '''
-          kubectl delete secret app-secrets --ignore-not-found
-          kubectl create secret generic app-secrets \
-            --from-literal=DB_PASSWORD="$DB_PASSWORD" \
-            --from-literal=AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID" \
-            --from-literal=AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY"
-        '''
-        sh "kubectl apply -f deploy/configmap.yaml"
-        sh "kubectl apply -f deploy/deployment-node-app.yaml"
-        sh "kubectl apply -f deploy/service-node-app.yaml"
-        sh "kubectl rollout restart deployment node-app"
-        sh "kubectl rollout restart deployment web"
-        sh "sleep 30"
-        script {
-          def apiUrl = sh(
-            script: "kubectl get svc node-app-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'",
-            returnStdout: true
-          ).trim()
-
-          sh """
-            sed 's|\\\${API_URL}|${apiUrl}|g' deploy/webapp-config.yaml | kubectl apply -f -
-          """
-        }
-        sh "kubectl apply -f deploy/deployment-web.yaml"
-        sh "kubectl apply -f deploy/service-web.yaml"
-    }
-  }
-}
-
-
-    stage('Verify Deployment') {
+    stage('Docker Build & Push') {
       steps {
-          sh "kubectl get svc"
+        withCredentials([
+          usernamePassword(credentialsId: 'dockerhub-creds',
+          usernameVariable: 'DOCKER_USER',
+          passwordVariable: 'DOCKER_PASS')
+        ]) {
+          sh '''
+            echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+
+            docker build -t $REGISTRY/$BACKEND_IMAGE:$IMAGE_TAG .
+            docker build -t $REGISTRY/$FRONTEND_IMAGE:$IMAGE_TAG ./html
+
+            docker push $REGISTRY/$BACKEND_IMAGE:$IMAGE_TAG
+            docker push $REGISTRY/$FRONTEND_IMAGE:$IMAGE_TAG
+
+            docker logout
+          '''
         }
+      }
+    }
+
+    stage('Manual Approval (PROD)') {
+      steps {
+        input message: "Approve deployment to PRODUCTION?"
+      }
+    }
+
+    stage('Deploy to Kubernetes') {
+      steps {
+        withCredentials([
+          string(credentialsId: 'db-password', variable: 'DB_PASSWORD'),
+          string(credentialsId: 'aws-access-key', variable: 'AWS_ACCESS_KEY_ID'),
+          string(credentialsId: 'aws-secret-key', variable: 'AWS_SECRET_ACCESS_KEY')
+        ]) {
+          sh '''
+            kubectl apply -f deploy/configmap.yaml
+
+            kubectl create secret generic app-secrets \
+              --from-literal=DB_PASSWORD=$DB_PASSWORD \
+              --from-literal=AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
+              --from-literal=AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
+              --dry-run=client -o yaml | kubectl apply -f -
+
+            sed -i "s|IMAGE_BACKEND|$REGISTRY/$BACKEND_IMAGE:$IMAGE_TAG|g" deploy/deployment-node-app.yaml
+            sed -i "s|IMAGE_FRONTEND|$REGISTRY/$FRONTEND_IMAGE:$IMAGE_TAG|g" deploy/deployment-web.yaml
+
+            kubectl apply -f deploy/deployment-node-app.yaml
+            kubectl apply -f deploy/service-node-app.yaml
+
+            kubectl rollout status deployment/node-app -n $KUBE_NAMESPACE --timeout=120s
+
+            kubectl apply -f deploy/deployment-web.yaml
+            kubectl apply -f deploy/service-web.yaml
+
+            kubectl rollout status deployment/web -n $KUBE_NAMESPACE --timeout=120s
+          '''
+        }
+      }
+    }
+
+  }
+
+  post {
+    failure {
+      echo "Deployment failed. Rolling back..."
+      sh '''
+        kubectl rollout undo deployment/node-app || true
+        kubectl rollout undo deployment/web || true
+      '''
+    }
+
+    success {
+      echo "Production deployment successful"
     }
   }
 }
