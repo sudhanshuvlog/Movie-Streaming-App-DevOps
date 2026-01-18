@@ -127,13 +127,12 @@ pipeline {
 
   post {
     failure {
-      agent { label 'ec2' }
-      steps {
-        sh '''
-          kubectl rollout undo deployment/node-app || true
-          kubectl rollout undo deployment/web || true
-        '''
-      }
+      node('ec2') {
+      sh '''
+        kubectl rollout undo deployment/node-app || true
+        kubectl rollout undo deployment/web || true
+      '''
+    }
     }
 
     success {
