@@ -110,10 +110,11 @@ pipeline {
               --from-literal=AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
               --from-literal=AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
               --dry-run=client -o yaml | kubectl apply -f -
-
-            kubectl apply -f deploy/deployment-node-app.yaml
+              
             kubectl apply -f deploy/service-node-app.yaml
-            kubectl set image deployment/node-app node-app=$REGISTRY/$BACKEND_IMAGE:$IMAGE_TAG
+            sed "s|image: movie-streaming-backend-nodejs|image: $REGISTRY/$BACKEND_IMAGE:$IMAGE_TAG|g" deploy/deployment-node-app.yaml | kubectl apply -f -
+            
+            kubectl annotate deployment node-app kubernetes.io/change-cause="Deploy backend image $REGISTRY/$BACKEND_IMAGE:$IMAGE_TAG" --overwrite
             sleep 20
           '''
 
@@ -131,9 +132,10 @@ pipeline {
           }
 
           sh '''
-            kubectl apply -f deploy/deployment-web.yaml
+            
             kubectl apply -f deploy/service-web.yaml
-            kubectl set image deployment/web web=$REGISTRY/$FRONTEND_IMAGE:$IMAGE_TAG
+            sed "s|image: movie-streaming-frontend|image: $REGISTRY/$FRONTEND_IMAGE:$IMAGE_TAG|g" deploy/deployment-web.yaml | kubectl apply -f -
+            kubectl annotate deployment web kubernetes.io/change-cause="Deploy frontend image $REGISTRY/$FRONTEND_IMAGE:$IMAGE_TAG" --overwrite
           '''
         }
       }
