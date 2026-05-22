@@ -131,9 +131,9 @@ pipeline {
           }
 
           sh '''
-            kubectl apply -f deploy/deployment-web.yaml
+            
             kubectl apply -f deploy/service-web.yaml
-            kubectl set image deployment/web web=$REGISTRY/$FRONTEND_IMAGE:$IMAGE_TAG
+            sed "s|IMAGE_TAG|$IMAGE_TAG|g" deploy/deployment-node-app.yaml | kubectl apply -f -
           '''
         }
       }
