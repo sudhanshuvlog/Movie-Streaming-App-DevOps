@@ -68,7 +68,7 @@ pipeline {
       agent { label 'ec2' }
       steps {
         withCredentials([
-          usernamePassword(credentialsId: 'dockerhub-creds',
+          usernamePassword(
           usernameVariable: 'DOCKER_USER',
           passwordVariable: 'DOCKER_PASS')
         ]) {
