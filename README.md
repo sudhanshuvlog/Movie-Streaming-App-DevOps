@@ -156,10 +156,9 @@ sudo dnf install -y mysql-community-client
   kubectl is a command-line tool used to interact with Kubernetes clusters. Install it to manage your EKS cluster:
 
   ````bash
-  curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.19.6/2021-01-05/bin/linux/amd64/kubectl
+  curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.36.2/2026-07-05/bin/linux/amd64/kubectl
   chmod +x ./kubectl
-  sudo mv ./kubectl /usr/local/bin
-  kubectl version --short --client
+  cp ./kubectl /usr/local/bin/
   ````
 
 ### Step 4: Create the EKS Cluster

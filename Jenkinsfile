@@ -15,14 +15,14 @@ pipeline {
   stages {
 
     stage('Checkout') { // job1
-      agent { label 'ec2' }
+      agent { label 'ec2' } //static worker node (agent)
       steps {
         checkout scm
       }
     }
 
     stage('Unit Tests') {
-      agent {dockerContainer 'jinny1/jenkins-slave-with-npm-support'}
+      agent {dockerContainer 'jinny1/jenkins-slave-with-npm-support'} // dynamic worker node (agent) with docker container
       steps {
         sh '''
           npm install
