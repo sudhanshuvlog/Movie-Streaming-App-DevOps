@@ -99,16 +99,14 @@ pipeline {
       steps {
         withCredentials([
           string(credentialsId: 'db-password', variable: 'DB_PASSWORD'),
-          string(credentialsId: 'aws-access-key', variable: 'AWS_ACCESS_KEY_ID'),
-          string(credentialsId: 'aws-secret-key', variable: 'AWS_SECRET_ACCESS_KEY')
+          // string(credentialsId: 'aws-access-key', variable: 'AWS_ACCESS_KEY_ID'),
+          // string(credentialsId: 'aws-secret-key', variable: 'AWS_SECRET_ACCESS_KEY')
         ]) {
           sh '''
             kubectl apply -f deploy/configmap.yaml
 
             kubectl create secret generic app-secrets \
               --from-literal=DB_PASSWORD=$DB_PASSWORD \
-              --from-literal=AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
-              --from-literal=AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
               --dry-run=client -o yaml | kubectl apply -f -
               
             kubectl apply -f deploy/service-node-app.yaml
