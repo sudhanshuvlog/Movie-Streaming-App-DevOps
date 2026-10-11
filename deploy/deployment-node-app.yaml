@@ -39,16 +39,6 @@ spec:
             configMapKeyRef:
               name: app-config
               key: DB_NAME
-        - name: AWS_ACCESS_KEY_ID
-          valueFrom:
-            secretKeyRef:
-              name: app-secrets
-              key: AWS_ACCESS_KEY_ID
-        - name: AWS_SECRET_ACCESS_KEY
-          valueFrom:
-            secretKeyRef:
-              name: app-secrets
-              key: AWS_SECRET_ACCESS_KEY
         - name: AWS_REGION
           valueFrom:
             configMapKeyRef:
