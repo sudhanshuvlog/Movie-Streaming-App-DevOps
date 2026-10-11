@@ -130,6 +130,10 @@ The project follows a multi-container Docker architecture consisting of three ma
     - https://hub.docker.com/r/jinny1/movie-streaming-frontend
     - https://hub.docker.com/r/jinny1/movie-streaming-backend-nodejs
 
+Connect to RDS DB 
+
+sudo yum install -y https://dev.mysql.com/get/mysql84-community-release-el9-1.noarch.rpm
+sudo dnf install -y mysql-community-client
 
 9. **Contact**
     For any inquiries or issues, please contact [me](https://www.linkedin.com/in/sudhanshu--pandey/)
